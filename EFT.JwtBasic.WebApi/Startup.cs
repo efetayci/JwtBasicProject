@@ -1,4 +1,5 @@
 using EFT.JwtBasic.Business.DependencyResolves.Microsoftioc;
+using EFT.JwtBasic.Business.StringInfos;
 using EFT.JwtBasic.WebApi.CustomFilters;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,9 +42,9 @@ namespace EFT.JwtBasic.WebApi
             {
                 opt.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidIssuer = "http://localhost",
-                    ValidAudience = "http://localhost",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("efefehmitayci")),
+                    ValidIssuer =  JwtInfo.Issuer,
+                    ValidAudience = JwtInfo.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtInfo.SecuritKkey)),
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
                     ClockSkew=TimeSpan.Zero
