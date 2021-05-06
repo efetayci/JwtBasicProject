@@ -7,6 +7,6 @@ namespace EFT.JwtBasic.Business.Interfaces
 {
     public interface IJwtService
     {
-         string GenerateJwtToken(AppUser appUser, List<AppRole> roles)
+        string GenerateJwt(AppUser appUser, List<AppRole> roles);
     }
 }

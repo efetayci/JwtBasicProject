@@ -12,7 +12,7 @@ namespace EFT.JwtBasic.Business.Concrete
 {
     public class JwtManager : IJwtService
     {
-        public string GenerateJwtToken(AppUser appUser ,List<AppRole> roles)
+        public string GenerateJwt(AppUser appUser ,List<AppRole> roles)
         {
             
            SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey

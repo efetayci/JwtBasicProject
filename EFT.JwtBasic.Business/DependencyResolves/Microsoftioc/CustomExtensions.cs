@@ -3,6 +3,7 @@ using EFT.JwtBasic.Business.Interfaces;
 using EFT.JwtBasic.Business.Validation.FluentValidation;
 using EFT.JwtBasic.DataAccess.Concrete.EntityFrameworkCore.Repositories;
 using EFT.JwtBasic.DataAccess.Interfaces;
+using EFT.JwtBasic.Entites.Dtos.AppUserDtos;
 using EFT.JwtBasic.Entites.Dtos.ProductDtos;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,10 @@ namespace EFT.JwtBasic.Business.DependencyResolves.Microsoftioc
             //validation için
             services.AddTransient<IValidator<ProductAddDto>, ProductAddDtoValidator>();
             services.AddTransient<IValidator<ProductUpdateDto>,ProductUpdateDtoValidator>();
+            services.AddTransient<IValidator<AppUserLoginDto>,AppUserLognDtoValidator>();
+
+            //Token için
+            services.AddScoped<IJwtService, JwtManager>();
         }
     }
 }
