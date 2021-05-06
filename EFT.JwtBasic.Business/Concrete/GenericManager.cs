@@ -22,22 +22,22 @@ namespace EFT.JwtBasic.Business.Concrete
 
         public async Task<List<TEntity>> GetAll()
         {
-            return await genericDal.GetAll();
+            return await this.genericDal.GetAll();
         }
 
         public async Task<TEntity> GetById(int id)
         {
-            return await genericDal.GetById(id);
+            return await this.genericDal.GetById(id);
         }
 
         public async Task Remove(TEntity entity)
         {
-            await genericDal.Remove(entity);
+            await this.genericDal.Remove(entity);
         }
 
         public async Task Update(TEntity entity)
         {
-            await genericDal.Update(entity);
+            await this.genericDal.Update(entity);
         }
     }
 }
