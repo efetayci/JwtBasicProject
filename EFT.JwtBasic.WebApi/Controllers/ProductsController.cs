@@ -65,7 +65,7 @@ namespace EFT.JwtBasic.WebApi.Controllers
         }
 
         [Route("/Error")]
-        public IActionResult Error()
+        protected IActionResult Error()
         {
             var errorInfo = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
             //errorInfo.Error.Meesage or stack tee with logger... 

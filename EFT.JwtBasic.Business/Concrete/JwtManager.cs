@@ -40,13 +40,14 @@ namespace EFT.JwtBasic.Business.Concrete
             claims.Add(new Claim(ClaimTypes.Name, appUser.Name));
             claims.Add(new Claim(ClaimTypes.NameIdentifier, appUser.Id.ToString()));
 
-            if (roles.Count > 0)
+            if (roles?.Count > 0)
             {
                 foreach (var role in roles)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role.Name));
                 }
             }
+
             return claims;
         }
     }

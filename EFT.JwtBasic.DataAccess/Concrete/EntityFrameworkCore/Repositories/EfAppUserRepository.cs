@@ -1,6 +1,7 @@
 ﻿using EFT.JwtBasic.DataAccess.Concrete.EntityFrameworkCore.Context;
 using EFT.JwtBasic.DataAccess.Interfaces;
 using EFT.JwtBasic.Entites.Concrete;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +12,25 @@ namespace EFT.JwtBasic.DataAccess.Concrete.EntityFrameworkCore.Repositories
 {
     public class EfAppUserRepository : EfGenericRepository<AppUser>, IAppUserDal
     {
-        
-        public Task<List<AppRole>> GetRolesByUserName(string userName)
-        {
-            List<AppRole> roles = new List<AppRole>();
-            
-            var context = new JwtContext();
-            var user = context.AppUsers.Where(x => x.UserName == userName).FirstOrDefault();
-            var allRole = context.AppUserRoles.Where(x => x.AppUserId == user.Id).ToList();
 
-            foreach (var item in allRole)
-            {
-                AppRole role = new AppRole()
+        public async Task<List<AppRole>> GetRolesByUserName(string userName)
+        {
+            using var context = new JwtContext();
+            return await context.AppUsers.Join(context.AppUserRoles, u => u.Id, ur => ur.AppUserId,
+                (user, userRole) => new
                 {
-                    Id = item.Id,
-                    Name = item.AppRole.Name
-                };
-                roles.Add(role);
-            }
-            return roles;
+                    user = user,
+                    userRole = userRole
+                }).Join(context.AppRoles, two => two.userRole.AppRoleId, r => r.Id, (twotable, role) => new
+                {
+                    user = twotable.user,
+                    userRole = twotable.userRole,
+                    role = role
+                }).Where(x => x.user.UserName == userName).Select(x => new AppRole
+                {
+                    Id = x.role.Id,
+                    Name = x.role.Name
+                }).ToListAsync();
         }
     }
 }

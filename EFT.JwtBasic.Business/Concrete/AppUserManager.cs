@@ -27,5 +27,10 @@ namespace EFT.JwtBasic.Business.Concrete
         {
             return await this.appUserDal.GetByFiter(x => x.UserName == userName);
         }
+
+        public async Task<List<AppRole>> GetRolesByUserName(string userName)
+        {
+            return await this.appUserDal.GetRolesByUserName(userName);
+        }
     }
 }

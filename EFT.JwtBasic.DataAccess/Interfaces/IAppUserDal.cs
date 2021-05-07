@@ -8,6 +8,6 @@ namespace EFT.JwtBasic.DataAccess.Interfaces
 {
     public interface IAppUserDal : IGenericDal<AppUser>
     {
-        Task<List<AppRole>> GetRolesByUserName(string userNAme);
+        Task<List<AppRole>> GetRolesByUserName(string userName);
     }
 }

@@ -1,5 +1,8 @@
-﻿using EFT.JwtBasic.Business.Interfaces;
+﻿using AutoMapper;
+using EFT.JwtBasic.Business.Interfaces;
+using EFT.JwtBasic.Entites.Concrete;
 using EFT.JwtBasic.Entites.Dtos.AppUserDtos;
+using EFT.JwtBasic.WebApi.CustomFilters;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,13 +17,15 @@ namespace EFT.JwtBasic.WebApi.Controllers
     {
         private readonly IJwtService jwtService;
         private readonly IAppUserService appUserService;
-        public AuthController(IJwtService jwtService, IAppUserService appUserService)
+        private readonly IMapper mapper;
+        public AuthController(IJwtService jwtService, IAppUserService appUserService, IMapper mapper)
         {
             this.jwtService = jwtService;
             this.appUserService = appUserService;
+            this.mapper = mapper;
         }
        [HttpGet("[action]")]
-       public async Task<IActionResult> SignIn(AppUserLoginDto appUserLoginDto)
+       public async Task<IActionResult> SignIn([FromQuery]AppUserLoginDto appUserLoginDto)
         {
             var appUser = await this.appUserService.FindByUserNameAsync(appUserLoginDto.UserName);
 
@@ -31,12 +36,24 @@ namespace EFT.JwtBasic.WebApi.Controllers
 
             if(await this.appUserService.CheckPasswordAsync(appUserLoginDto))
             {
-                var token =this.jwtService.GenerateJwt(appUser, null);
+                var roles = await this.appUserService.GetRolesByUserName(appUserLoginDto.UserName);
+                var token =this.jwtService.GenerateJwt(appUser,roles);
                 return Created("", token);
             }
 
-            return Ok();
-            
+            return BadRequest("Username or password is invalid");  
+        }
+        [HttpGet("[action]")]
+        [ValidModel]
+        public async Task<IActionResult> Register([FromQuery]AppUserAddDto appUserAddDto)
+        {
+            var user = await this.appUserService.FindByUserNameAsync(appUserAddDto.Name);
+            if (user != null)
+            {
+                return BadRequest($"{appUserAddDto.UserName} is already registered in the system");
+            }
+            await this.appUserService.Add(this.mapper.Map<AppUser>(appUserAddDto));
+            return Created("",appUserAddDto);
         }
     }
 }

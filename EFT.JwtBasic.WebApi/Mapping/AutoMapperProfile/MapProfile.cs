@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EFT.JwtBasic.Entites.Concrete;
+using EFT.JwtBasic.Entites.Dtos.AppUserDtos;
 using EFT.JwtBasic.Entites.Dtos.ProductDtos;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace EFT.JwtBasic.WebApi.Mapping.AutoMapperProfile
         {
             CreateMap<ProductAddDto,Product>().ReverseMap();
             CreateMap<ProductUpdateDto,Product>().ReverseMap();
+            CreateMap<AppUserAddDto,AppUser>().ReverseMap();
         }
     }
 }

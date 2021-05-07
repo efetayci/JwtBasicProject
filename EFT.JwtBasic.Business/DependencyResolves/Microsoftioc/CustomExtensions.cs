@@ -31,14 +31,18 @@ namespace EFT.JwtBasic.Business.DependencyResolves.Microsoftioc
 
             services.AddScoped<IAppUserRoleDal, EfAppUserRoleRepository>();
             services.AddScoped<IAppUserRoleService, AppUserRoleManager>();
+            //Token için
+            services.AddScoped<IJwtService, JwtManager>();
 
             //validation için
             services.AddTransient<IValidator<ProductAddDto>, ProductAddDtoValidator>();
             services.AddTransient<IValidator<ProductUpdateDto>,ProductUpdateDtoValidator>();
             services.AddTransient<IValidator<AppUserLoginDto>,AppUserLognDtoValidator>();
+            services.AddTransient<IValidator<AppUserAddDto>,AppUserAddDtoValidator>();
 
-            //Token için
-            services.AddScoped<IJwtService, JwtManager>();
+            
+
+            
         }
     }
 }

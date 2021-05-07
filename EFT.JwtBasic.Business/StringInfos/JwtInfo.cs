@@ -10,7 +10,5 @@ namespace EFT.JwtBasic.Business.StringInfos
         public const string Audience = "http://localhost";
         public const string SecuritKkey = "efefehmitayci220799";
         public const int TokenExpiration = 30;
-
-
     }
 }

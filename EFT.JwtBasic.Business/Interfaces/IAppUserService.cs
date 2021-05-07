@@ -11,6 +11,6 @@ namespace EFT.JwtBasic.Business.Interfaces
     {
         Task<AppUser> FindByUserNameAsync(string username);
         Task<bool> CheckPasswordAsync(AppUserLoginDto appUserLoginDto);
-        Task<List<AppRole>> GetRolesByUserName(string userNAme);
+        Task<List<AppRole>> GetRolesByUserName(string userName);
     }
 }
