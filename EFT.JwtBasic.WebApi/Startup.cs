@@ -46,12 +46,12 @@ namespace EFT.JwtBasic.WebApi
             {
                 opt.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidIssuer =  JwtInfo.Issuer,
+                    ValidIssuer = JwtInfo.Issuer,
                     ValidAudience = JwtInfo.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtInfo.SecuritKkey)),
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
-                    ClockSkew=TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
@@ -73,8 +73,31 @@ namespace EFT.JwtBasic.WebApi
                         Url = new Uri("https://twitter.com/efetayci")
                     }
                 });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
             });
-       
+
             services.AddControllers().AddFluentValidation(); //fluent validation geçtiðini belirtmek için
         }
 

@@ -44,12 +44,18 @@ namespace EFT.JwtBasic.WebApi
             //appuserrole tablosuna bu ilişkiyi eklemem lazım
             var role = await appRoleService.FindByNameAsync(RoleInfo.Admin);
             var admin = await appUserService.FindByUserNameAsync("ADMIN");
-
-            await appUserRoleService.Add(new AppUserRole
+            
+            //daha önce eklenmiş mi
+            var allUSerRole = await appUserRoleService.GetAll();
+            int kontrol = allUSerRole.Where(x => x.AppRoleId == role.Id && x.AppUserId == admin.Id).Count();
+            if (kontrol ==0)
             {
-                AppRoleId = role.Id,
-                AppUserId = admin.Id
-            });
+                await appUserRoleService.Add(new AppUserRole
+                {
+                    AppRoleId = role.Id,
+                    AppUserId = admin.Id
+                });
+            }
         } 
     }
 }

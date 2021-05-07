@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using EFT.JwtBasic.Business.Interfaces;
+using EFT.JwtBasic.Business.StringInfos;
 using EFT.JwtBasic.Entites.Concrete;
 using EFT.JwtBasic.Entites.Dtos.ProductDtos;
 using EFT.JwtBasic.WebApi.CustomFilters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +27,7 @@ namespace EFT.JwtBasic.WebApi.Controllers
             this.mapper = mapper;
         }
         [HttpGet]
+        [Authorize(Roles = RoleInfo.Admin + "," + RoleInfo.Member)]
         [ValidModel]
         public async Task<IActionResult> GetAll()
         {
@@ -33,6 +36,7 @@ namespace EFT.JwtBasic.WebApi.Controllers
         }
         [HttpGet("{id}")]
         [ServiceFilter(typeof(ValidId<Product>))]
+        [Authorize(Roles = RoleInfo.Admin)]
         public async Task<IActionResult> GetById(int id)
         {
             var product = await productService.GetById(id);
@@ -43,6 +47,7 @@ namespace EFT.JwtBasic.WebApi.Controllers
             return Ok(product);
         }
         [HttpPost]
+        [Authorize(Roles = RoleInfo.Admin)]
         [ValidModel]
         public async Task<IActionResult> Post(ProductAddDto productAddDto)
         {
@@ -50,6 +55,7 @@ namespace EFT.JwtBasic.WebApi.Controllers
             return Created("", productAddDto);
         }
         [HttpPut]
+        [Authorize(Roles = RoleInfo.Admin)]
         [ValidModel]
         public async Task<IActionResult> Update(ProductUpdateDto productUpdateDto)
         {
@@ -58,6 +64,7 @@ namespace EFT.JwtBasic.WebApi.Controllers
         }
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidId<Product>))]
+        [Authorize(Roles = RoleInfo.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             await productService.Remove(new Product { Id = id });
